@@ -1,0 +1,4 @@
+<!doctype html><meta charset="utf-8"><title>Mobil test</title>
+<body style="margin:0;background:#888">
+<iframe id="f" style="width:375px;height:812px;border:0;background:#fff"></iframe>
+<script>document.getElementById('f').src='./'+(location.search||'?demo=salon&fx=1&selftest=1');setTimeout(()=>{const d=document.getElementById('f').contentDocument;document.title=d.title+' | '+(d.getElementById('selftest')||{}).textContent?.split('\n').pop();},9000)</script>

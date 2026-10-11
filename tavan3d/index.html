@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GMC Tavan Stüdyo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;600;800&family=Barlow+Condensed:wght@700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="dot"></span>GMC LED · Tavan Stüdyo <small>Aşama 4 · ürün kataloğu</small></div>
+  <nav class="steps">
+    <button data-step="1" class="is-active">1 · Fotoğraf</button>
+    <button data-step="2" disabled>2 · Odayı işaretle</button>
+    <button data-step="3" disabled>3 · Işıklandır</button>
+  </nav>
+</header>
+
+<main class="layout">
+  <aside class="panel">
+    <!-- ADIM 1 -->
+    <section class="step" id="step1">
+      <div class="seg mode-seg" id="modeSeg"><button data-mode="oda" class="is-active">🏠 Oda / salon</button><button data-mode="vitrin">💎 Kuyumcu vitrini</button></div>
+      <div class="oda-only">
+      <h2>Salonunun fotoğrafını yükle</h2>
+      <p class="muted">Fotoğraf hiçbir yere gönderilmez, sadece bu cihazda işlenir.</p>
+      </div>
+      <div class="vit-only" id="vitForm">
+        <h2>Kuyumcu vitrini</h2>
+        <p class="muted">Ölçüleri gir ve yerleşimi seç, sonra vitrinin fotoğrafını yükle. Girdiğin ölçüler fotoğrafı da kalibre eder; ETNA'lar fotoğraftaki vitrine gerçek ölçüsünde oturur.</p>
+        <p class="label">Bölge</p>
+        <div class="zones">
+          <button type="button" class="zone is-active" data-vplace="ic"><b>Dış vitrin</b><small>ETNA · tavandan</small></button>
+          <button type="button" class="zone" data-vplace="banko"><b>Banko üzeri</b><small>ETNA · mağaza tavanından</small></button>
+          <button type="button" class="zone" disabled><b>Duvar nişleri</b><small>BLADE · sonraki aşama</small></button>
+          <button type="button" class="zone" disabled><b>Genel alan</b><small>MIDY / OPUS · sonraki aşama</small></button>
+        </div>
+        <p class="label vz-banko" hidden>Banko ölçüleri</p>
+        <div class="vgrid vz-banko" hidden>
+          <label>Banko uzunluğu<span class="unit"><input type="number" data-v="width" min="40" max="1000" step="1" inputmode="numeric"><span>cm</span></span></label>
+          <label>Banko derinliği<span class="unit"><input type="number" data-v="depth" min="25" max="300" step="1" inputmode="numeric"><span>cm</span></span></label>
+          <label>Banko üstü <small>yerden</small><span class="unit"><input type="number" data-v="table" min="0" max="350" step="1" inputmode="numeric"><span>cm</span></span></label>
+          <label>Mağaza tavanı <small>yerden</small><span class="unit"><input type="number" data-v="store" min="100" max="600" step="1" inputmode="numeric"><span>cm</span></span></label>
+          <label class="span2">ETNA'lar tavanda bankonun ortasından <small>(+ sana doğru, − karşı tarafa; 0 = tam üstü)</small><span class="unit"><input type="number" data-v="off" min="-200" max="200" step="1" inputmode="numeric"><span>cm</span></span></label>
+        </div>
+        <p class="label vz-dis">Vitrin ölçüleri</p>
+        <div class="vgrid vz-dis">
+          <label>Genişlik<span class="unit"><input type="number" data-v="width" min="40" max="1000" step="1" inputmode="numeric"><span>cm</span></span></label>
+          <label>Derinlik<span class="unit"><input type="number" data-v="depth" min="25" max="300" step="1" inputmode="numeric"><span>cm</span></span></label>
+          <label>Vitrin tavanı <small>yerden</small><span class="unit"><input type="number" data-v="height" min="60" max="400" step="1" inputmode="numeric"><span>cm</span></span></label>
+          <label>Tabla <small>yerden</small><span class="unit"><input type="number" data-v="table" min="0" max="350" step="1" inputmode="numeric"><span>cm</span></span></label>
+        </div>
+        <p class="label">Ürün ve montaj</p>
+        <div class="seg"><button type="button" data-vsku="ETNA-6">ETNA 6</button><button type="button" data-vsku="ETNA-12">ETNA 12</button><button type="button" data-vsku="ETNA-26">ETNA 26</button></div>
+        <div class="seg vz-dis"><button type="button" data-vplace="ic">Vitrin tavanına</button><button type="button" data-vplace="onu">Mağaza tavanına (cam önü)</button></div>
+        <div class="vgrid vit-onu">
+          <label>Mağaza tavanı <small>yerden</small><span class="unit"><input type="number" data-v="store" min="100" max="600" step="1" inputmode="numeric"><span>cm</span></span></label>
+          <label>Camdan uzaklık<span class="unit"><input type="number" data-v="front" min="5" max="150" step="1" inputmode="numeric"><span>cm</span></span></label>
+        </div>
+        <div class="seg"><button type="button" data-vrot="0">Uzun kenar cama paralel</button><button type="button" data-vrot="1">Cama dik</button></div>
+        <p class="label">Ölçüye göre yerleşim</p>
+        <div class="vit-cards vcards"></div>
+        <div class="vgrid">
+          <label>Yan yana<span class="unit"><input type="number" data-v="cols" min="1" max="30" step="1" inputmode="numeric"><span>adet</span></span></label>
+          <label class="vit-rows">Sıra<span class="unit"><input type="number" data-v="rows" min="1" max="10" step="1" inputmode="numeric"><span>sıra</span></span></label>
+        </div>
+        <div class="vit-sum vsum"></div>
+        <div class="vit-warn vwarn" hidden></div>
+        <label class="file-btn">📂 Sitedeki proje dosyasını aç (.json)<input type="file" id="vitJson" accept=".json,application/json"></label>
+        <p class="muted small" id="vitFileMsg"></p>
+        <p class="label"><span class="vz-dis">Vitrinin fotoğrafı</span><span class="vz-banko" hidden>Bankonun fotoğrafı</span></p>
+      </div>
+      <details class="guide-box vit-only vz-banko" open hidden>
+        <summary>Bankoyu nasıl çekmeliyim?</summary>
+        <ul class="guide">
+          <li class="ok">Müşteri tarafından, ayakta göz hizasından; bankonun üstü görünsün</li>
+          <li class="ok">Banko üstünün 4 köşesi görünsün (biri kadraj dışındaysa tahmini yerine dokunulur)</li>
+          <li class="ok">Biraz yandan çek: lens daha doğru hesaplanır. Tam karşıdan da çalışır, ölçüler kalibre eder</li>
+          <li class="ok"><b>1x</b> lens; banko ışıkları kapalı; uzunluk, derinlik ve yüksekliği metreyle ölç</li>
+          <li class="no">0.5x geniş açı, banko üstünü tamamen kapatan yakın çekim</li>
+        </ul>
+      </details>
+      <details class="guide-box vit-only vz-dis" open>
+        <summary>Vitrini nasıl çekmeliyim?</summary>
+        <ul class="guide">
+          <li class="ok">Vitrinin önünden, biraz yandan çek (tam karşıdan değil): lens daha doğru hesaplanır</li>
+          <li class="ok">Işıkların takılacağı tavanın 4 köşesi görünsün (vitrin içi tavan ya da cam önündeki mağaza tavanı)</li>
+          <li class="ok"><b>1x</b> lens; vitrin ışıkları kapalı, gündüz</li>
+          <li class="ok">Tavanı biraz alttan çek; genişlik ve derinliği metreyle ölç (cm hassas)</li>
+          <li class="no">Cam yansımasının köşeleri kapattığı açı, 0.5x geniş açı</li>
+        </ul>
+      </details>
+      <details class="guide-box oda-only" open>
+        <summary>Nasıl çekmeliyim?</summary>
+        <ul class="guide">
+          <li class="ok">Odanın bir köşesinden, karşı duvara doğru çek</li>
+          <li class="ok">Telefonu düz tut; yukarı ya da aşağı eğme</li>
+          <li class="ok"><b>1x</b> lens kullan (0.5x geniş açı bükülme yapar)</li>
+          <li class="ok">Arka duvarın 4 köşesi ve tavan görünsün</li>
+          <li class="ok">Gündüz çek; mevcut lambalar kapalı olsun</li>
+          <li class="no">Dikey çekim, yakın çekim, filtreli fotoğraf</li>
+        </ul>
+      </details>
+      <label class="upload" id="dropZone">
+        <input type="file" id="fileInput" accept="image/*">
+        <span class="upload-ico">+</span>
+        <strong>Fotoğraf seç ya da buraya bırak</strong>
+        <small>JPG / PNG</small>
+      </label>
+      <p class="label">ya da örnekle dene</p>
+      <div class="samples oda-only">
+        <button data-sample="salon"><img src="ornek/salon.jpg" alt=""><span>Salon</span></button>
+        <button data-sample="mutfak"><img src="ornek/mutfak.jpg" alt=""><span>Mutfak</span></button>
+      </div>
+      <div class="samples vit-only">
+        <button data-sample="vitrin" class="vz-dis"><img src="ornek/vitrin.jpg" alt=""><span>Örnek vitrin</span></button>
+        <button data-sample="testBanko" class="vz-banko" hidden><img src="../test_sahne/cikti/banko.jpg" alt=""><span>Blender test bankosu (ölçüsü kesin)</span></button>
+        <button data-sample="testVitrin" class="vz-dis"><img src="../test_sahne/cikti/vitrin.jpg" alt=""><span>Blender test vitrini (ölçüsü kesin)</span></button>
+        <button id="synthBtn" type="button"><span class="synth-ico">▭</span><span><span class="vz-dis">Fotoğrafsız: ölçüden çiz (vitrin tavanı)</span><span class="vz-banko" hidden>Fotoğrafsız: ölçüden çiz (banko)</span></span></button>
+      </div>
+    </section>
+
+    <!-- ADIM 2 -->
+    <section class="step" id="step2" hidden>
+      <h2>Odayı işaretle</h2>
+      <div id="photoWarn"></div>
+      <div class="place-box" id="placeBox">
+        <div class="place-step"><span id="placeNo">1/6</span><strong id="placeText"></strong></div>
+        <p class="muted" id="placeHelp"></p>
+        <p class="tip">Parmağını basılı tutup kaydırabilirsin; büyüteçte yeri görünce bırak.</p>
+        <button id="skipSide" class="ghost" hidden>Bu çizgi görünmüyor, atla</button>
+      </div>
+      <div id="adjustBox" hidden>
+        <p class="muted vit-only vz-banko" hidden>Noktaları sürükleyerek ince ayar yap. <b class="c1">Turuncu çerçeve</b> banko üstü (girdiğin ölçü). <b class="c2">Mavi çizgiler</b> banko köşelerinden zemine iner; fotoğraftaki banko kenarlarıyla örtüşüyorsa hesap doğru.</p>
+        <p class="muted vit-only vz-dis">Noktaları sürükleyerek ince ayar yap. <b class="c1">Turuncu çerçeve</b> işaretlediğin tavan (girdiğin ölçü). <b class="c2">Mavi çizgiler</b> tavanın arka kenarından aşağı iner; fotoğraftaki cam / duvar köşeleriyle örtüşüyorsa hesap doğru.</p>
+        <p class="muted oda-only">Noktaları sürükleyerek ince ayar yap. <b class="c2">Mavi çizgiler</b> fotoğraftaki duvar–tavan ve duvar–zemin çizgileriyle örtüşüyorsa oda doğru kurulmuştur.</p>
+      </div>
+      <div class="calib-info vit-only vit-line">Ölçüler: <b class="vit-dims"></b> <button type="button" class="linkbtn vit-edit">değiştir</button></div>
+      <div class="field oda-only">
+        <label for="ceilH">Tavan yüksekliği</label>
+        <div class="unit"><input type="number" id="ceilH" value="2.70" step="0.05" min="0.4" max="8"><span>m</span></div>
+      </div>
+      <div class="field">
+        <label for="lens">Lens açısı <span id="lensVal" class="pill">24 mm</span></label>
+        <input type="range" id="lens" min="10" max="60" step="0.5" value="24">
+        <div class="row"><button id="autoLens" class="ghost">Mavi noktalardan hesapla</button></div>
+      </div>
+      <div class="calib-info" id="calibInfo"></div>
+      <button class="primary" id="toStep3">Tamam, ışıklandırmaya geç →</button>
+      <div class="row"><button id="restartMark" class="ghost">↺ Baştan işaretle</button></div>
+    </section>
+
+    <!-- ADIM 3 -->
+    <section class="step" id="step3" hidden>
+      <h2>Ray ve ürünleri yerleştir</h2>
+      <div class="blk vit-only vit-top">
+        <p class="label">Vitrin yerleşimi</p>
+        <div class="seg"><button type="button" data-vsku="ETNA-6">ETNA 6</button><button type="button" data-vsku="ETNA-12">ETNA 12</button><button type="button" data-vsku="ETNA-26">ETNA 26</button></div>
+        <div class="seg vz-dis"><button type="button" data-vplace="ic">Vitrin tavanına</button><button type="button" data-vplace="onu">Mağaza tavanına (cam önü)</button></div>
+        <div class="vgrid vz-banko" hidden><label class="span2">Tavanda bankonun ortasından <small>(0 = tam üstü)</small><span class="unit"><input type="number" data-v="off" min="-200" max="200" step="1" inputmode="numeric"><span>cm</span></span></label></div>
+        <div class="vit-cards vcards"></div>
+        <div class="vit-sum vsum"></div>
+        <div class="vit-warn vwarn" hidden></div>
+        <div class="row wrap"><button type="button" class="ghost" id="vitRelayout">↺ Yeniden diz</button><button type="button" class="ghost" id="vitExport">💾 Proje dosyası (.json)</button></div>
+        <p class="muted small">Kart seçince ETNA'lar yeniden dizilir. Tek tek taşımak için sürükle; eğim ve ışık açısı seçili ürün kutusunda.</p>
+      </div>
+      <div class="blk oda-only">
+        <p class="label">1 · Ray sistemi</p>
+        <div class="systems" id="systems"></div>
+      </div>
+      <div class="blk oda-only">
+        <p class="label">2 · Ray ekle</p>
+        <div class="shapes" id="shapes"></div>
+        <div class="dims" id="dims"></div>
+        <button class="primary wide" id="addRail">+ Rayı tavana ekle</button>
+        <p class="muted small">Ray eklenince sürükleyerek taşı; ölçüsünü ve yönünü seçili ray kutusundan değiştir.</p>
+      </div>
+      <div class="sel-tools" id="selTools" hidden></div>
+      <div class="blk">
+        <p class="label" id="prodHint">3 · Ürün seç, rayın üstüne tıkla</p>
+        <div class="seg oda-only" id="groupSeg"><button data-group="ray" class="is-active">Magnet ray</button><button data-group="spot">Gömme spot</button><button data-group="gomme">Kuyumcu</button></div>
+        <div class="filters" id="filters"></div>
+        <div class="products" id="products"></div>
+      </div>
+      <div class="blk">
+        <p class="label">Işık</p>
+        <div class="field">
+          <label>Işık rengi</label>
+          <div class="seg" id="cctSeg"><button data-cct="3000" class="is-active">3000K</button><button data-cct="4000">4000K</button><button data-cct="6500">6500K</button></div>
+        </div>
+        <div class="field">
+          <label>Işıklar</label>
+          <div class="seg" id="onSeg"><button data-on="1" class="is-active">Açık</button><button data-on="0">Kapalı</button></div>
+        </div>
+        <div class="field">
+          <label for="dayNight">Gündüz ↔ Akşam <span id="dnVal" class="pill">Akşam</span></label>
+          <input type="range" id="dayNight" min="0" max="1" step="0.01" value="0.15">
+        </div>
+        <div class="field">
+          <label for="gain">Işık şiddeti (deneme ayarı) <span id="gainVal" class="pill">1.0x</span></label>
+          <input type="range" id="gain" min="0.3" max="3" step="0.05" value="1">
+        </div>
+      </div>
+      <div class="blk" id="luxBlk">
+        <p class="label">Işık ölçümü · <span id="luxPlane">tabla üstü</span></p>
+        <div class="lux-grid"><div><span>Ortalama</span><b id="luxAvg">-</b></div><div><span>En düşük</span><b id="luxMin">-</b></div><div><span>En yüksek</span><b id="luxMax">-</b></div><div><span>Düzgünlük</span><b id="luxU">-</b></div></div>
+        <div class="lux-legend" id="luxLegend"></div>
+        <p class="note" id="luxNote"></p>
+      </div>
+      <div class="blk vit-only">
+        <p class="label">Vitrin</p>
+        <div class="mrow"><span class="vit-dims"></span><button type="button" class="linkbtn vit-edit">değiştir</button></div>
+      </div>
+      <div class="blk oda-only">
+        <p class="label">Oda</p>
+        <div class="mrow"><span>Genişlik (arka duvar, fotoğraftan)</span><strong id="roomW">-</strong></div>
+        <div class="mrow"><span>Derinlik (arka duvardan karşı duvara)</span><span class="unit"><input type="number" id="roomD" min="1" max="30" step="0.1"><span>m</span></span></div>
+      </div>
+      <div class="blk">
+        <p class="label">Malzeme listesi</p>
+        <div id="materials"></div>
+        <p class="note">[Tahmin] Bağlantı parçası adları ve adetleri yaklaşık; GMC kataloğuyla teyit edilecek.</p>
+      </div>
+      <div class="row wrap">
+        <button id="selAllBtn" class="ghost" title="Ctrl+A · tek tek eklemek için Shift / Ctrl + tıkla">☑ Tümünü seç</button>
+        <button id="clearBtn" class="ghost">Hepsini kaldır</button>
+        <button id="pngBtn" class="primary">Görseli indir (PNG)</button>
+      </div>
+      <p class="note vit-only">ETNA 26 gücü katalogdaki <b>44 W</b> (GMCLED_KATALOG s.50). Sitedeki araç 50 W gösteriyor; GMC'den teyit bekleniyor.</p>
+      <p class="note">ETNA değerleri GMC kataloğundan [Kesin]. Magnet ürünlerin lümeni katalogda yok: 90 lm/W ve tipik açılar (spot 36°, mercek 24°) [Tahmin]. Görüntü temsilidir.</p>
+    </section>
+  </aside>
+
+  <section class="stage-wrap">
+    <div class="stage-bar" id="stageBar" hidden>
+      <div class="seg" id="viewSeg"><button data-view="photo" class="is-active">📷 Fotoğraf</button><button data-view="plan">📐 Plan</button><button data-view="free">🧊 Serbest 3D</button><button data-view="model" class="vit-only">📦 Ölçülü model</button></div>
+      <div class="seg" id="mviewSeg" hidden><button data-mv="persp" class="is-active">Perspektif</button><button data-mv="front">Ön</button><button data-mv="right">Sağ</button><button data-mv="left">Sol</button><button data-mv="top">Üst</button></div>
+      <button class="ghost cmp vit-only is-active" id="dimBtn" title="Gerçek ölçüleri (cm) göster">📏 Ölçüler</button>
+      <button class="ghost cmp is-active" id="footBtn" title="Her ürünün ışığının tablaya / zemine düştüğü alan (ışın açısı kenarı)">◎ Işık izi</button>
+      <button class="ghost cmp" id="luxBtn" title="Tablaya / zemine düşen ışık (lüks) haritası">🌡 Lüks haritası</button>
+      <button class="ghost cmp" id="guideBtn" title="Vitrin ya da tavan kenarlarına kılavuz çizgi çiz">✏ Kılavuz çiz</button>
+      <button class="ghost cmp" id="cmpBtn" title="Solda ışıksız fotoğraf, sağda tasarım">◧ Önce / Sonra</button>
+      <span class="hint" id="hint"></span>
+    </div>
+    <div class="stage" id="stage">
+      <div class="empty" id="empty">Fotoğraf yükleyince burada görünecek</div>
+      <div class="stage-banner" id="stageBanner" hidden></div>
+      <div class="undo-bar" id="undoBar" hidden><button id="undoBtn" title="Geri al (Ctrl+Z)">↶ Geri al</button><button id="redoBtn" title="İleri al (Ctrl+Y)">↷ İleri al</button></div>
+      <canvas id="calibCanvas" hidden></canvas>
+      <div id="glHost" hidden></div>
+      <canvas id="planCanvas" hidden></canvas>
+      <canvas id="dimCanvas" hidden></canvas>
+      <div class="toast" id="toast" hidden></div>
+      <div class="split" id="split" hidden><span class="tag l">ÖNCE</span><span class="knob">⇔</span><span class="tag r">SONRA</span></div>
+      <div class="credit" id="credit" hidden></div>
+    </div>
+  </section>
+</main>
+<script type="module" src="app.js"></script>
+</body>
+</html>
